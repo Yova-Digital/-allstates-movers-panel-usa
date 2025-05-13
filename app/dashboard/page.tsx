@@ -1,0 +1,297 @@
+import { CalendarClock, Truck, Users } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "@/components/ui/chart"
+
+import DashboardLayout from "@/components/dashboard-layout"
+import { StatCard } from "@/components/stat-card"
+import { analyticsData, movingRequests } from "@/lib/data"
+
+export default function DashboardPage() {
+  // Get recent requests (last 5)
+  const recentRequests = [...movingRequests].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()).slice(0, 5)
+
+  return (
+    <DashboardLayout>
+      <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+        </div>
+
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <StatCard
+                title="Total Requests"
+                value={analyticsData.totalRequests}
+                icon={Truck}
+                trend={{ value: 12, isPositive: true }}
+              />
+              <StatCard
+                title="New Customers"
+                value={analyticsData.newCustomers}
+                icon={Users}
+                trend={{ value: 5, isPositive: true }}
+              />
+              <StatCard
+                title="Returning Customers"
+                value={analyticsData.returningCustomers}
+                icon={Users}
+                trend={{ value: 8, isPositive: true }}
+              />
+              <StatCard
+                title="Pending Requests"
+                value={analyticsData.requestsByStatus.pending}
+                icon={CalendarClock}
+                trend={{ value: 3, isPositive: false }}
+              />
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+              <Card className="col-span-4">
+                <CardHeader>
+                  <CardTitle>Monthly Requests</CardTitle>
+                  <CardDescription>Number of moving requests per month</CardDescription>
+                </CardHeader>
+                <CardContent className="pl-2">
+                  <ResponsiveContainer width="100%" height={350}>
+                    <AreaChart
+                      data={analyticsData.monthlyRequests}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <defs>
+                        <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
+                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Area type="monotone" dataKey="total" stroke="#3b82f6" fillOpacity={1} fill="url(#colorTotal)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card className="col-span-3">
+                <CardHeader>
+                  <CardTitle>Request Types</CardTitle>
+                  <CardDescription>Distribution of request types</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={350}>
+                    <BarChart
+                      data={[
+                        { name: "Local", value: analyticsData.requestsByType.local },
+                        { name: "Long Distance", value: analyticsData.requestsByType.longDistance },
+                        { name: "Commercial", value: analyticsData.requestsByType.commercial },
+                        { name: "Residential", value: analyticsData.requestsByType.residential },
+                      ]}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="value" fill="#8884d8" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <Card className="col-span-2">
+                <CardHeader>
+                  <CardTitle>Recent Requests</CardTitle>
+                  <CardDescription>Latest moving requests submitted</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-8">
+                    {recentRequests.map((request) => (
+                      <div key={request.id} className="flex items-center">
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium leading-none">
+                            {request.customerName}
+                            {request.isReturningCustomer && (
+                              <span className="ml-2 text-xs text-purple-500 bg-purple-500/10 px-2 py-0.5 rounded-full">
+                                Returning
+                              </span>
+                            )}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {request.serviceType.charAt(0).toUpperCase() + request.serviceType.slice(1)} Move •{" "}
+                            {request.requestedDate.toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="ml-auto font-medium">
+                          <span
+                            className={`
+                            px-2 py-1 rounded-full text-xs
+                            ${request.status === "pending" ? "bg-yellow-500/20 text-yellow-500" : ""}
+                            ${request.status === "completed" ? "bg-green-500/20 text-green-500" : ""}
+                            ${request.status === "cancelled" ? "bg-red-500/20 text-red-500" : ""}
+                            ${request.status === "in-progress" ? "bg-blue-500/20 text-blue-500" : ""}
+                          `}
+                          >
+                            {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Request Status</CardTitle>
+                  <CardDescription>Current status of all requests</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart
+                      layout="vertical"
+                      data={[
+                        { name: "Pending", value: analyticsData.requestsByStatus.pending },
+                        { name: "In Progress", value: analyticsData.requestsByStatus.inProgress },
+                        { name: "Completed", value: analyticsData.requestsByStatus.completed },
+                        { name: "Cancelled", value: analyticsData.requestsByStatus.cancelled },
+                      ]}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 60,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis type="number" />
+                      <YAxis dataKey="name" type="category" />
+                      <Tooltip />
+                      <Bar dataKey="value" fill="#3b82f6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <Card className="col-span-2">
+                <CardHeader>
+                  <CardTitle>Weekly Trends</CardTitle>
+                  <CardDescription>Request distribution by day of week</CardDescription>
+                </CardHeader>
+                <CardContent className="pl-2">
+                  <ResponsiveContainer width="100%" height={350}>
+                    <BarChart
+                      data={analyticsData.weeklyRequests}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="total" fill="#3b82f6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Customer Breakdown</CardTitle>
+                  <CardDescription>New vs returning customers</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={350}>
+                    <BarChart
+                      data={[
+                        { name: "New", value: analyticsData.newCustomers },
+                        { name: "Returning", value: analyticsData.returningCustomers },
+                      ]}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="value" fill="#8884d8" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Monthly Growth</CardTitle>
+                <CardDescription>Request volume over the past year</CardDescription>
+              </CardHeader>
+              <CardContent className="pl-2">
+                <ResponsiveContainer width="100%" height={400}>
+                  <AreaChart
+                    data={analyticsData.monthlyRequests}
+                    margin={{
+                      top: 10,
+                      right: 30,
+                      left: 0,
+                      bottom: 0,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="total" stroke="#8884d8" fill="#8884d8" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </DashboardLayout>
+  )
+}
