@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
 } from "@/components/ui/chart"
 
-// The DashboardLayout is already provided by the parent layout
+import DashboardLayout from "@/components/dashboard-layout"
 import { StatCard } from "@/components/stat-card"
 import { analyticsData, movingRequests } from "@/lib/data"
 
@@ -15,7 +15,7 @@ export default function DashboardPage() {
   const recentRequests = [...movingRequests].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()).slice(0, 5)
 
   return (
-    <>
+    <DashboardLayout>
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
         <div className="flex items-center justify-between">
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
@@ -171,6 +171,6 @@ export default function DashboardPage() {
           </TabsContent>
         </Tabs>
       </div>
-    </>
+    </DashboardLayout>
   )
 }
