@@ -6,7 +6,7 @@
 import { getAuthToken } from './auth.service';
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 /**
  * Function to login to the admin panel
@@ -15,7 +15,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/a
  * @returns Login response with token
  */
 export async function loginAdmin(email: string, password: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const url = `${baseUrl}/admin/login`;
 
   try {
@@ -83,7 +83,7 @@ async function getDevToken() {
  * @returns Response data
  */
 export async function fetchAPI(endpoint: string, options: RequestInit = {}) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const url = `${baseUrl}${endpoint}`;
 
   try {
