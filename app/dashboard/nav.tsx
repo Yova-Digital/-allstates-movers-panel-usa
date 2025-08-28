@@ -26,7 +26,7 @@ export default function DashboardNav() {
     <header className="sticky top-0 z-40 border-b bg-background">
       <div className="container flex h-16 items-center justify-between py-4">
         <div className="hidden md:block">
-          <h2 className="text-lg font-semibold">US50 Transport Dashboard</h2>
+          <h2 className="text-lg font-semibold">Allstates Movers  Dashboard</h2>
         </div>
         <div className="flex items-center gap-2">
           <Button

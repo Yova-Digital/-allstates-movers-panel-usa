@@ -56,7 +56,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex items-center justify-center h-24 border-b border-gray-800">
             <Link href="/dashboard" className="flex items-center gap-2">
               <Truck className="h-8 w-8 text-blue-500" />
-              <span className="font-bold text-xl">US50 Transport</span>
+              <span className="font-bold text-xl">Allstates Movers </span>
             </Link>
           </div>
           <div className="flex-1 flex flex-col px-0 overflow-auto space-y-3 py-4">
@@ -117,7 +117,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex items-center justify-center flex-1">
             <Link href="/dashboard" className="flex items-center gap-2">
               <Truck className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg">US50 Transport</span>
+              <span className="font-bold text-lg">Allstates Movers </span>
             </Link>
           </div>
         </nav>
@@ -127,7 +127,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <div className="flex items-center justify-between h-20 px-6 border-b border-gray-800">
                 <Link href="/dashboard" className="flex items-center gap-2">
                   <Truck className="h-6 w-6 text-blue-500" />
-                  <span className="font-bold text-lg">US50 Transport</span>
+                  <span className="font-bold text-lg">Allstates Movers </span>
                 </Link>
                 <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(false)}>
                   <X className="h-5 w-5" />

@@ -26,7 +26,7 @@ export default function LoginPage() {
       await loginAdmin(email, password)
       toast({
         title: "Login successful",
-        description: "Welcome to the US50 Transport dashboard",
+        description: "Welcome to the Allstates Movers  dashboard",
       })
       router.push("/dashboard")
     } catch (error) {
@@ -54,7 +54,7 @@ export default function LoginPage() {
           </div>
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Admin Login</h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Sign in to access the US50 Transport dashboard
+            Sign in to access the Allstates Movers  dashboard
           </p>
         </div>
 
@@ -123,7 +123,7 @@ export default function LoginPage() {
       </div>
       
       <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
-        <p>© {new Date().getFullYear()} US50 Transport LLC. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Allstates Movers  LLC. All rights reserved.</p>
       </div>
     </div>
   )

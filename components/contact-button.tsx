@@ -12,7 +12,7 @@ interface ContactButtonProps {
 
 export function ContactButton({ email, phone, name }: ContactButtonProps) {
   const handleEmailClick = () => {
-    window.location.href = `mailto:${email}?subject=US50 Transport - Moving Request`
+    window.location.href = `mailto:${email}?subject=Allstates Movers  - Moving Request`
   }
 
   const handlePhoneClick = () => {
@@ -23,7 +23,7 @@ export function ContactButton({ email, phone, name }: ContactButtonProps) {
     // Format phone number for WhatsApp (remove non-digits)
     const formattedPhone = phone.replace(/\D/g, "")
     window.open(
-      `https://wa.me/${formattedPhone}?text=Hello ${name}, this is US50 Transport regarding your moving request.`,
+      `https://wa.me/${formattedPhone}?text=Hello ${name}, this is Allstates Movers  regarding your moving request.`,
       "_blank",
     )
   }

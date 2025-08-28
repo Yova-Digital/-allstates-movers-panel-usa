@@ -4,7 +4,7 @@
  */
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.us50transport.com/api';
+const API_BASE_URL = 'https://api.allstatesmovers.llc/api';
 
 // Types
 export interface Admin {

@@ -88,7 +88,7 @@ export function ExportButtons({ data, fileName, exportPdfTitle, exportCsvTitle }
           doc.setFontSize(8)
           doc.setTextColor(100, 100, 100)
           doc.text(
-            `Page ${i} of ${pageCount} - US50 Transport LLC`,
+            `Page ${i} of ${pageCount} - Allstates Movers  LLC`,
             doc.internal.pageSize.getWidth() / 2,
             doc.internal.pageSize.getHeight() - 10,
             { align: 'center' }

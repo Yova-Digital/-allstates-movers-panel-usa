@@ -3,11 +3,6 @@
  * Handles API requests to the backend
  */
 
-import { getAuthToken } from './auth.service';
-
-// API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
 /**
  * Function to login to the admin panel
  * @param email Admin email
@@ -15,7 +10,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
  * @returns Login response with token
  */
 export async function loginAdmin(email: string, password: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = "https://api.allstatesmovers.llc/api";
   const url = `${baseUrl}/admin/login`;
 
   try {
@@ -83,7 +78,7 @@ async function getDevToken() {
  * @returns Response data
  */
 export async function fetchAPI(endpoint: string, options: RequestInit = {}) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl = "https://api.allstatesmovers.llc/api";
   const url = `${baseUrl}${endpoint}`;
 
   try {
